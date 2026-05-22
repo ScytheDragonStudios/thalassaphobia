@@ -7,7 +7,7 @@ function createWindow() {
     
     // 2. Safer Display Logic: 
     // Tries for the 3rd display (index 2), falls back to primary (index 0)
-    const targetDisplay = displays[1];
+    const targetDisplay = displays[3];
 
     const win = new BrowserWindow({
         x: targetDisplay.bounds.x,

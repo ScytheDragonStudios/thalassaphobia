@@ -6,3 +6,68 @@ body {
 canvas {
     display: block;
 }
+
+#splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 2s ease;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.warning-container {
+    max-width: 600px;
+    padding: 30px;
+    border: 1px solid #330000;
+    background: #0a0a0a;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(150, 0 , 0, 0.1);
+}
+
+.warning-container h2 {
+    color: #b40000;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.warning-divider {
+    border: 0;
+    height: 1px;
+    background: #330000;
+    margin-bottom: 20px;
+}
+
+.warning-text {
+    color: #888;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+#start-btn {
+    background: #111;
+    color: #b40000;
+    border: 1px solid #b40000;
+    padding: 12px 30px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+#start-btn:hover {
+    background: #b40000;
+    color: black;
+    box-shadow: 0 0 15px rgba(180, 0, 0, 0.6);
+}

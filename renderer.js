@@ -36,6 +36,7 @@ let isInitialized = false;
 let glitchIntensity = 0;
 let watchingEyes = [];
 let eyeWaveTimer = 0;
+let observers = [];
 
 
 startBtn.addEventListener('click', () => {
@@ -224,27 +225,82 @@ function drawSigils(bass) {
         ctx.save();
         ctx.translate(canvas.width / 2, canvas.height / 2);
 
-        //Ritual red, gets darker/faded as song goes
-        ctx.strokeStyle = `rgba(180, 0, 0, ${finalAlpha})`;
-        ctx.shadowBlur = 15 * pulse //Glow pulses as heartbeat
-        ctx.shadowColor = "red";
+        ctx.rotate(audio.currentTime * 0.05);
 
-        //Line width swells with heartbeat
-        ctx.lineWidth = 1 + (pulse * 5) + (bass / 60);
+        //Ritual red, gets darker/faded as song goes
+        ctx.strokeStyle = `rgba(150, 0, 0, ${finalAlpha})`;
+        ctx.shadowBlur = 20 * pulse //Glow pulses as heartbeat
+        ctx.shadowColor = "red";
+        ctx.lineWidth = 1.5 + (pulse * 4) + (bass / 50);
 
         ctx.beginPath();
-        //Outer circle
-        ctx.arc(0, 0, 180, 0, Math.PI * 2);
-        //Triangle
-        ctx.moveTo(0, -180);
-        ctx.lineTo(155, 90);
-        ctx.lineTo(-155, 90);
-        ctx.closePath();
+        const points = 7;
+        const radius = 180;
 
+        for (let i = 0; i <= points * 3; i++) {
+            let angle = (i * (Math.PI * 2) * 3) / points;
+            let x = Math.cos(angle) * (radius + (pulse * 5));
+            let y = Math.sin(angle) * (radius + (pulse * 5));
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
         ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(0, -40, 60, Math.PI * 0.2, Math.PI * 0.8);
+        ctx.arc(0, 40, 60, Math.PI * 1.2, Math.PI * 1.8);
+        ctx.stroke();
+
+        let eyeSlitWidth = (bass / 60);
+        ctx.fillStyle = `rgba(150, 0, 0, ${finalAlpha})`;
+        ctx.beginPath();
+        ctx.moveTo(0, -90);
+        ctx.quadraticCurveTo(eyeSlitWidth, 0, 0, 90);
+        ctx.quadraticCurveTo(-eyeSlitWidth, 0, 0, -90);
+        ctx.fill();
+
         ctx.restore();
     } 
     
+}
+
+//Spawn silhoutte occasionally
+function handleObservers() {
+    if (hasHitWater && isShattered && Math.random() > 0.998 && observers.length < 2) {
+        observers.push({
+            x: Math.random() > 0.5 ? -500 : canvas.width + 500,
+            y: Math.random() * canvas.height,
+            width: 400 + Math.random() * 600,
+            height: 800 + Math.random() * 1000,
+            speed: 0.2 + Math.random() * 0.3,
+            dir: Math.random() > 0.5 ? 1 : -1,
+            opacity: 0
+        });
+    }
+
+
+    //Draw and update observers
+    observers.forEach((obs, index) => {
+        obs.x += obs.speed * obs.dir;
+
+        //Fade in and out as they move
+        if (obs.x > 0 && obs.x < canvas.width) {
+            obs.opacity = Math.min(obs.opacity + 0.005, 0.15);
+        }
+
+        ctx.save();
+        ctx.globalAlpha = obs.opacity;
+        ctx.filter = "blur(50px)";
+        ctx.fillStyle = "#0a0510";
+
+        ctx.beginPath();
+        ctx.ellipse(obs.x, obs.y, obs.width, obs.height, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if(obs.x > canvas.width + 1000 || obs.x < -1000) observers.splice(index, 1);
+    });
 }
 
 function handleEyes() {
@@ -357,6 +413,7 @@ function loop() {
     }
 
     handleParticles();
+    handleObservers();
     handleEyes();
 
     // 6. Draw Lurker (Behind)
