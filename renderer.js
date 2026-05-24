@@ -1,4 +1,36 @@
 // 1. DOM Elements
+const lyricTimeline = [
+    { time: 26, text: "Gravedigger digging his grave" },
+    { time: 28, text: "Whole body shaking, he fading away" },
+    { time: 30, text: "Summonin' thunderin' brimstone and rain" },
+    { time: 32, text: "Awaken the dark from a watery grave" },
+    { time: 34, text: "Thalassaphobic, my soul is en-caged" },
+    { time: 37, text: "All of these chains are compulsing my rage" },
+    { time: 39, text: "Think I'm insane but they know that I'm crazed" },
+    { time: 41, text: "HOW THE F*** YOU GON' STOP A FREIGHT TRAIN?!" },
+    { time: 43, text: "Dragons, they slither, they crawl from the sea" },
+    { time: 45, text: "Watching them coming, they looking for me" },
+    { time: 47, text: "Lurk in the shadows, they out for my dreams" },
+    { time: 49, text: "As soon as I close my eyes, that's all I see" },
+    { time: 51, text: "Blood in the ocean, is black, I can smell it" },
+    { time: 53, text: "Something that came from the darkness it fell in" },
+    { time: 56, text: "Swimming with sharks, thinking I should just tell 'em" },
+    { time: 59, text: "Go ahead, eat me, my flesh, I should sell it" },
+    { time: 60, text: "I think I been here before" },
+    { time: 61, text: "That's the crazy thing" },
+    { time: 62, text: "Black water void" },
+    { time: 63, text: "What they gave to me "},
+    { time: 64, text: "Why do I feel like the dark one was saving me" },
+    { time: 66, text: "It told me 'I was the one' who was made for thee" }, 
+    { time: 69, text: "Blood in the water is coming in droves" },
+    { time: 71, text: "My arms and legs ain't my own" },
+    { time: 73, text: "In all of my thoughts in the past, I had known" },
+    { time: 75, text: "Had started to show me the light in the glow" },
+    { time: 77, text: "The darkness upon me is crawling to me" },
+    { time: 79, text: "I'm telling you, I can-I can-I can-hear it" },
+];
+
+const lyricElement = document.getElementById('lyric-overlay');
 const audio = document.getElementById('track');
 const canvas = document.getElementById('fx');
 const ctx = canvas.getContext('2d');
@@ -462,6 +494,25 @@ function loop() {
 
     if (hasHitWater && isShattered) {
         drawSigils(bass);
+    }
+
+    if (hasHitWater) {
+        let currentLyric = "";
+        let currentTime = audio.currentTime;
+
+        for (let i = 0; i < lyricTimeline.length; i++) {
+            if (currentTime >= lyricTimeline[i].time) {
+                if (i === lyricTimeline.length - 1 || currentTime < lyricTimeline[i + 1].time) {
+                    if (currentTime - lyricTimeline[i].time < 4.5) {
+                        currentLyric = lyricTimeline[i].text;
+                    }
+                }
+            }
+        }
+        if (lyricElement && lyricElement.innerText !== currentLyric) {
+            lyricElement.innerText = currentLyric;
+            lyricElement.style.opacity = currentLyric === "" ? "0" : "1";
+        }
     }
 
     requestAnimationFrame(loop);

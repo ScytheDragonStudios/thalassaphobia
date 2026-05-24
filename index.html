@@ -12,7 +12,7 @@
             <p>Ritual by Bill from Accounting</p>
             <button id="start-btn">INITIALIZE LINK</button>
         </div>
-        <div class="warning-container">
+        <div class="warning-container splash">
             <h2> // WARNING //</h2>
             <hr class="warning-divider">
             <p class="warning-text">
@@ -21,8 +21,9 @@
             <p class="warning-text">
                 Features **cosmic horror imagery, existential distress themes**, and **aggressive, high-volume darktrap audio**. Viewer discretion is heavily advised.
             </p>
-        </div>"
+        </div>
     </div>
+    
     <div id="credits">
         <div class="ritual-box">
             <h2>RITUAL COMPLETE</h2>
@@ -33,69 +34,8 @@
         </div>
     </div>
 
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: black;
-        }
-
-        #fx {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-
-        /* Shared styling for Splash and Credits */
-        #splash, #credits {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: black;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            color: white;
-            font-family: 'Courier New', monospace;
-            transition: opacity 3s ease;
-        }
-
-        #splash {
-            z-index: 100;
-        }
-
-        #credits {
-            z-index: 200; /* Higher than everything else */
-            opacity: 0;   /* Hidden by default */
-            pointer-events: none;
-        }
-
-        .ritual-box {
-            text-align: center; 
-            border: 1px solid #333; 
-            padding: 40px;
-            background: rgba(0, 0, 0, 0.8); /* Slight transparency looks cool */
-        }
-
-        button {
-            background: transparent; 
-            border: 1px solid #00ff64; 
-            color: #00ff64;
-            padding: 10px 20px; 
-            cursor: pointer; 
-            margin-top: 20px;
-            font-family: 'Courier New', monospace;
-        }
-
-        button:hover { 
-            background: #00ff64; 
-            color: black; 
-        }
-    </style>
-
     <canvas id="fx"></canvas>
+    <div id="lyric-overlay"></div>
     <audio id="track" src="Thalassaphobia.wav"></audio>
     <script src="renderer.js"></script>
 </body>
